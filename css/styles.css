@@ -175,3 +175,30 @@ body { color: var(--text); font-family: system-ui, -apple-system, Segoe UI, Robo
   background-position: center;
 }
 */
+/* About page bubble */
+.content-bubble {
+  background: rgba(255, 255, 255, 0.85); /* 30% less see-through */
+  color: #000;                           /* darker text for readability */
+  padding: 24px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-align: left;
+  line-height: 1.6;
+}
+/* About page bubble styled like homepage */
+.content-bubble {
+  background: rgba(0, 0, 0, 0.65); /* medium transparency black */
+  color: #fff;                     /* white text inside */
+  padding: 24px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  line-height: 1.6;
+}
+
+.content-bubble h1,
+.content-bubble h2,
+.content-bubble p,
+.content-bubble strong,
+.content-bubble a {
+  color: #fff; /* ensure all text elements stay white */
+}
