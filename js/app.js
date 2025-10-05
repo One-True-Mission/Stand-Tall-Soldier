@@ -1,4 +1,4 @@
-// app.js — drop-in
+// app.js — drop-in (clean version for svh/dvh/lvh CSS)
 (() => {
   const menu = document.getElementById('sidemenu');
   const hamburger = document.querySelector('.hamburger');
@@ -6,6 +6,16 @@
   const root = document.documentElement;
   const year = document.getElementById('year');
   const range = document.getElementById('brightnessRange');
+
+  // Nudge background focus only on Chrome for iOS (CriOS)
+(() => {
+  const ua = navigator.userAgent || '';
+  const isIPhone = /iPhone|iPod/.test(ua);
+  const isChromeOniOS = /CriOS\/\d+/.test(ua);
+  if (isIPhone && isChromeOniOS) {
+    document.documentElement.style.setProperty('--bgx', '62%'); // try 60–68% to taste
+  }
+})();
 
   // Footer year
   if (year) year.textContent = new Date().getFullYear();
@@ -25,7 +35,11 @@
   ));
   backdrop?.addEventListener('click', close);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
-  document.querySelectorAll('.menu-link').forEach(a => a.addEventListener('click', close));
+
+  // Close drawer when tapping any primary link
+  document.querySelectorAll('.menu-link').forEach(a => {
+    a.addEventListener('click', close);
+  });
 
   // ----- Brightness slider (persists) -----
   if (range) {
@@ -54,25 +68,10 @@
     });
   }
 
-  // ----- iOS anti-zoom shim for the fixed background -----
-  // Keeps .bg crisp during momentum scroll
-  let ticking = false;
-  window.addEventListener('scroll', () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      const bg = document.querySelector('.bg');
-      if (bg) {
-        bg.style.willChange = 'transform';
-        bg.style.transform = 'translateZ(0)'; // re-raster hint
-        setTimeout(() => { bg.style.willChange = 'auto'; }, 120);
-      }
-      ticking = false;
-    });
-  }, { passive: true });
 })();
+  
 // --- Resources dropdown (drawer submenu) ---
-(function () {
+(() => {
   const disclosures = document.querySelectorAll('.menu-disclosure');
   disclosures.forEach(btn => {
     const targetId = btn.getAttribute('aria-controls');
